@@ -6,6 +6,7 @@
 package Controller;
 
 import Modele.DAO;
+import Modele.DataSourceFactory;
 import Modele.Discount;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -28,8 +29,12 @@ public class ApplicationListener implements ServletContextListener{
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        if (!databaseExists()){
-            initializeDatabase();
+        try {
+            if (!databaseExists()){
+                initializeDatabase();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ApplicationListener.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -38,7 +43,7 @@ public class ApplicationListener implements ServletContextListener{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
        
-    private boolean databaseExists() {
+    private boolean databaseExists() throws SQLException {
 		boolean result = false;
 
 		DAO dao = new DAO(DataSourceFactory.getDataSource());

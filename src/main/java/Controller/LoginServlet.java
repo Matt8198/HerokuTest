@@ -7,6 +7,7 @@ package Controller;
 
 import Modele.Customer;
 import Modele.DAO;
+import Modele.DataSourceFactory;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class LoginServlet extends HttpServlet {
         showView("login.jsp", request, response);
     }
 
-    private void startSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void startSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         HttpSession session = request.getSession();
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -71,7 +72,8 @@ public class LoginServlet extends HttpServlet {
         } else {
             // TODO Diego : Ne plus utiliser 
             System.out.println("HERE | name = " + name);
-            DAO dao = new DAO(DataSourceFactory.getDataSource());
+            DAO dao = new DAO(DataSourceFactory.getDataSource()
+            );
             Customer c = null;
             try {
                 c = dao.Customer(name);

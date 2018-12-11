@@ -6,6 +6,7 @@
 package Controller;
 
 import Modele.DAO;
+import Modele.DataSourceFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -38,7 +41,7 @@ public class AllPersoInfo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
 
         Properties resultat = new Properties();
@@ -83,7 +86,11 @@ public class AllPersoInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AllPersoInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -97,7 +104,11 @@ public class AllPersoInfo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AllPersoInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
